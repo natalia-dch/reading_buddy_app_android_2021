@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatsActivity">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <TextView
+            android:text="Chats"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/header"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:weightSum="10.0"
+            android:layout_margin="10dp"/>
+
+
+        <ListView
+            android:layout_weight="1"
+            android:id="@+id/list"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/header"
+            android:layout_above="@id/footer">
+
+        </ListView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="18sp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/footer">
+
+            <ImageButton
+                android:id="@+id/navb1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="72dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/ic_person"
+                android:backgroundTint="@color/black"
+                android:onClick="toProfile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:layout_editor_absoluteY="0dp" />
+
+            <ImageButton
+                android:id="@+id/navb2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/ic_home"
+                android:backgroundTint="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/navb3"
+                app:layout_constraintStart_toEndOf="@+id/navb1"
+                tools:layout_editor_absoluteY="0dp"
+                android:onClick="toHome"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/navb3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="72dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/ic_message"
+                android:backgroundTint="@color/black"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

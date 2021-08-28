@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Profile"
+        android:textSize="30dp"
+        android:layout_margin="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/header">
+            <ImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="106dp"
+                android:layout_height="102dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_gravity="center_horizontal"/>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <Space
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="change data"
+                    android:textAllCaps="false"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="changeData"/>
+                <Space
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="  log out  "
+                    android:textAllCaps="false"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="Logout"/>
+                <Space
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"/>
+
+            </LinearLayout>
+
+    <TextView
+        android:id="@+id/long_read"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem"
+        android:textColor="@color/black"
+        tools:layout_editor_absoluteX="152dp"
+        tools:layout_editor_absoluteY="302dp"
+        android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:weightSum="6.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/header">
+
+        <ImageButton
+            android:id="@+id/navb1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="72dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/ic_person"
+
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp"
+            android:backgroundTint="@color/black"/>
+
+        <ImageButton
+            android:id="@+id/navb2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/ic_home"
+            android:onClick="toHome"
+            app:layout_constraintEnd_toStartOf="@+id/navb3"
+            app:layout_constraintStart_toEndOf="@+id/navb1"
+            tools:layout_editor_absoluteY="0dp"
+            android:backgroundTint="@color/black"/>
+
+        <ImageButton
+            android:id="@+id/navb3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="72dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/ic_message"
+            android:onClick="toChats"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteY="0dp"
+            android:backgroundTint="@color/black"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

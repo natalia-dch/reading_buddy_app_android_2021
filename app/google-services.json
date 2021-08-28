@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "499204390486",
+    "project_id": "readingbuddy-4451c",
+    "storage_bucket": "readingbuddy-4451c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499204390486:android:2b4fc720daf9c17dc4c5f7",
+        "android_client_info": {
+          "package_name": "natalia.doskach.readingbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499204390486-m9qfgnv1s3rkiv1nkfflhhiet29nafr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh5_l3Vo42TxULxEs7TRJz4cAwT6IHtTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499204390486-m9qfgnv1s3rkiv1nkfflhhiet29nafr2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

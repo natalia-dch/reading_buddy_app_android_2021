@@ -13,38 +13,53 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class AddGenresActivity extends AppCompatActivity {
     HashMap<String,Boolean> genresList = new HashMap<String,Boolean>();
-    boolean[] myGenres;
+//    boolean[] myGenres;
     int counter = 0;
     int globalCounter;
     boolean isOne = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(getIntent().hasExtra("isOne"))
-            isOne = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_genres);
-        myGenres = new boolean[10];
-        for (int i = 0; i < 10; i++) {
-            genresList.put(Data.genresArray[i],false);
-        }
+//        myGenres = new boolean[10];
         LinearLayout layout = findViewById(R.id.list1);
         int count = layout.getChildCount();
         Button b = null;
+        if(getIntent().hasExtra("genres"))
+            genresList.putAll((HashMap<String,Boolean>) getIntent().getSerializableExtra("genres"));
+        else{
+        for (int i = 0; i < 10; i++) {
+            genresList.put(Data.genresArray[i],false);
+        }}
         for(int i=0; i<count; i++) {
             b = (Button)layout.getChildAt(i);
             b.setText(Data.genresArray[i]);
-            b.setBackgroundColor(Color.parseColor("#E5E5E5"));
-            b.setTextColor(Color.BLACK);
-            //do something with your child element
+            if(genresList.get(Data.genresArray[i]))
+            {
+                b.setBackgroundColor(Color.parseColor("#F8B101"));
+                b.setTextColor(Color.WHITE);
+                counter++;
+            }
+            else{
+                b.setBackgroundColor(Color.parseColor("#E5E5E5"));
+                b.setTextColor(Color.BLACK);
+            }
         }
+
+
 
     }
 
     @Override
     public void onBackPressed() {
+        back();
+    }
+
+    public void back(View v){
         back();
     }
 

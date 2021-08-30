@@ -27,6 +27,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         form =  findViewById(R.id.form);
     }
 
+    public void back(View v){
+        back();
+    }
+
     @Override
     public void onBackPressed() {
         back();

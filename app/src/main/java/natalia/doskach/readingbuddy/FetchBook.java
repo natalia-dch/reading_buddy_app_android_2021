@@ -27,13 +27,13 @@ public class FetchBook extends AsyncTask<String, Void, String> {
     private List<String> images;
     private List<String> ISBNs;
     private EditText mBookInput;
-    AddABookActivity.BookAdapter adapter;
+    BookAdapter adapter;
 
     // Class name for Log tag
     private static final String LOG_TAG = FetchBook.class.getSimpleName();
 
     // Constructor providing a reference to the views in MainActivity
-    public FetchBook(List<String> titles, List<String> authors, List<String> images, List<String> ISBNs, EditText bookInput, AddABookActivity.BookAdapter a) {
+    public FetchBook(List<String> titles, List<String> authors, List<String> images, List<String> ISBNs, EditText bookInput, BookAdapter a) {
 
         this.mBookInput = bookInput;
         this.titles = titles;

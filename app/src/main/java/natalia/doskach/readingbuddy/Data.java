@@ -35,12 +35,12 @@ public class Data {
         arr[6]="\n"+"Location:";
         arr[8]="\n"+"About:";
         String text = "";
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 10; i++) {
             text+=arr[i];
         }
         final SpannableStringBuilder str = new SpannableStringBuilder(text);
         int size = 0;
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 10; i++) {
             if(i%2==0)
             {str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), size, size+arr[i].length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             size+= arr[i].length();
@@ -60,7 +60,7 @@ public class Data {
             Map.Entry pair = (Map.Entry)it.next();
             if((Boolean) pair.getValue())
                     s +=pair.getKey() + ", ";
-            it.remove(); // avoids a ConcurrentModificationException
+//            it.remove(); // avoids a ConcurrentModificationException
         }
         return s.substring(0,s.length()-2);
     }
@@ -71,7 +71,7 @@ public class Data {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             s +="\""+((Book)pair.getValue()).title+"\" by "+((Book)pair.getValue()).author+", ";
-            it.remove(); // avoids a ConcurrentModificationException
+//            it.remove(); // avoids a ConcurrentModificationException
         }
         return s.substring(0,s.length()-2);
     }

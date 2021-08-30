@@ -45,6 +45,10 @@ public class RegistrationActivity<Firebase> extends AppCompatActivity {
 
     }
 
+    public void back(View v){
+        back();
+    }
+
     @Override
     public void onBackPressed() {
         back();
@@ -60,7 +64,6 @@ public class RegistrationActivity<Firebase> extends AppCompatActivity {
             return;
         }
         if (!addedBooks) {
-            Toast.makeText(RegistrationActivity.this, "Add favorite books!", Toast.LENGTH_LONG).show();
             return;
         }
         if (!addedGenres) {
@@ -124,7 +127,7 @@ public class RegistrationActivity<Firebase> extends AppCompatActivity {
     }
 
     public void addReadingList(View view) {
-        startActivityForResult(new Intent(this, AddABookActivity.class), 1);
+        startActivityForResult(new Intent(this, AddBooksActivity.class).putExtra("title","Books To Read"), 1);
     }
 
     public void addGenres(View view) {
@@ -132,7 +135,7 @@ public class RegistrationActivity<Firebase> extends AppCompatActivity {
     }
 
     public void addFavBooks(View view) {
-        startActivityForResult(new Intent(this, AddABookActivity.class), 3);
+        startActivityForResult(new Intent(this, AddBooksActivity.class).putExtra("title","Favorite books"), 3);
     }
 
     @Override

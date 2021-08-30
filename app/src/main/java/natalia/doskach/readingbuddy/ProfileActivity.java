@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,8 +51,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 u = snapshot.getValue(User.class);
-                if(u.picURL!=null && !u.picURL.isEmpty())
-                        Glide.with(ProfileActivity.this).load(u.picURL).into(profile); //TODO
+                if(u.picURL!=null && !u.picURL.isEmpty()){
+                        Glide.with(ProfileActivity.this).load(u.picURL).placeholder(getDrawable(R.drawable.ic_def_profile)).into(profile);} //TODO
                longread.setText(Data.createText(u));
             }
 

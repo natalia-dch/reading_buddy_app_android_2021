@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.READINGBUDDY" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimary">@color/yellow</item>v
         <item name="colorPrimaryVariant">@color/yellow</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -14,12 +14,17 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/lora</item>
         <item name="android:buttonStyle">@style/Button</item>
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">false</item>
+
+        <!-- specify enter and exit transitions -->
     </style>
 
     <style name="Theme.READINGBUDDY.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:fontFamily">@font/lora</item>
+        <item name="android:windowActivityTransitions">false</item>
     </style>
 
     <style name="Theme.READINGBUDDY.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

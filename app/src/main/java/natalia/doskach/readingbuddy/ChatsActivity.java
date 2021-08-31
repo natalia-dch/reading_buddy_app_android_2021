@@ -15,10 +15,12 @@ public class ChatsActivity extends AppCompatActivity {
     }
     public void toProfile(View view) {
         startActivity(new Intent(this,ProfileActivity.class));
+        finish();
     }
 
     public void toHome(View view) {
         startActivity(new Intent(this,HomeActivity.class));
+        finish();
     }
 
     public void toChat(View view) {

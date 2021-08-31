@@ -14,8 +14,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -28,22 +31,33 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class HomeActivity extends AppCompatActivity {
     EditText input;
     ListView list;
+    Button aBtn;
+    Button bBtn;
+    Button resetBtn;
+    ArrayList<User> filteredUsers = new ArrayList<User>();
     ArrayList<User> users = new ArrayList<User>();
     ArrayList<String> comments = new ArrayList<String>();
+    ArrayList<String> filteredComments = new ArrayList<String>();
     DatabaseReference ref;
     UserAdapter a;
+    ProgressBar pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        aBtn = findViewById(R.id.input);
+        bBtn = findViewById(R.id.search);
+        resetBtn = findViewById(R.id.filterReset);
+        pb = findViewById(R.id.pb);
+        pb.setVisibility(View.VISIBLE);
         list = findViewById(R.id.list);
-
         ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.keepSynced(true);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -55,6 +69,10 @@ public class HomeActivity extends AppCompatActivity {
                     users.add(u);
                     comments.add(Data.createSmallText(u));
                 }
+                a = new UserAdapter(getApplicationContext(), users, comments);
+                pb.setVisibility(View.INVISIBLE);
+                list.setAdapter(a);
+                a.notifyDataSetChanged();
                 System.out.print("added values");
             }
 
@@ -63,11 +81,12 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-        a = new UserAdapter(this, users,comments);
-        list.setAdapter(a);
-        a.notifyDataSetChanged();
+
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 
     public void toProfile(View view) {
         startActivity(new Intent(this, ProfileActivity.class));
@@ -105,6 +124,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
     private void searchByGenre(String str) {
     }
 
@@ -124,59 +144,83 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case 1:
-                filterByThisBook((String) data.getSerializableExtra("value"));
-                break;
-            case 2:
-                filterByThisGenre((String) data.getSerializableExtra("value"));
-                break;
-        }
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
+                case 1:
+                    Book book = null;
+                    String code = "", name = "";
+                    HashMap<String, Book> newData = (HashMap<String, Book>) data.getSerializableExtra("list");
+                    if (!newData.isEmpty()) {
+                        for (HashMap.Entry<String, Book> entry : newData.entrySet()) {
+                            book = entry.getValue();
+                            name = book.title;
+                        }
+                        filterByThisBook(book);
+                    }
+                    break;
+                case 2:
+                    String genre = (String) data.getSerializableExtra("value");
+                    filterByThisGenre(genre);
+                    break;
+            }
     }
 
     private void filterByThisGenre(String value) {
-        ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                users.clear();
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    User u = d.getValue(User.class);
-                    for (int i = 0; i < 10; i++) {
-                        if (u.genres.get(value))
-                            users.add(u);
-                    }
-                }
-                System.out.print("added values");
+        filteredUsers.clear();
+        filteredComments.clear();
+        for (User user : users
+        ) {
+            if (user.genres.get(value)) {
+                filteredUsers.add(user);
+                filteredComments.add("likes " + value);
             }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
+        }
+        if(filteredUsers.isEmpty())
+            Toast.makeText(this, "Nothing was found! Try another search", Toast.LENGTH_LONG).show();
+        else{
+        changeBtns(value);
+        a = new UserAdapter(getApplicationContext(), filteredUsers, filteredComments);
+        list.setAdapter(a);}
     }
 
-    private void filterByThisBook(String value) {
-        ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                users.clear();
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    User u = d.getValue(User.class);
-                    if (u.TBR.containsKey(value) || u.favBooks.containsKey(value))
-                        users.add(u);
-                }
-                System.out.print("added values");
+    private void filterByThisBook(Book book) {
+        String value = book.ISBN;
+        String title = "\""+book.title +"\" by "+book.author;
+        filteredUsers.clear();
+        filteredComments.clear();
+        for (User user : users
+        ) {
+            if (user.TBR.containsKey(value))
+            {
+                filteredUsers.add(user);
+                filteredComments.add("wants to read "+title);
             }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
+            else if(user.favBooks.containsKey(value)){
+                filteredUsers.add(user);
+                filteredComments.add("likes "+title);
             }
-        });
+        }
+        if(filteredUsers.isEmpty())
+            Toast.makeText(this, "Nothing was found! Try another search", Toast.LENGTH_LONG).show();
+        else{
+           changeBtns(value);
+        a = new UserAdapter(getApplicationContext(), filteredUsers, filteredComments);
+        list.setAdapter(a);}
+    }
+
+    public void filterReset(View view) {
+        resetBtn.setVisibility(View.GONE);
+        aBtn.setVisibility(View.VISIBLE);
+        bBtn.setVisibility(View.VISIBLE);
+        a = new UserAdapter(getApplicationContext(), users, comments);
+        list.setAdapter(a);
+    }
+
+    private void changeBtns(String text) {
+        aBtn.setVisibility(View.GONE);
+        bBtn.setVisibility(View.GONE);
+        resetBtn.setVisibility(View.VISIBLE);
+        resetBtn.setText(text + "\u2717");
     }
 
     class UserAdapter extends ArrayAdapter {
@@ -205,8 +249,7 @@ public class HomeActivity extends AppCompatActivity {
             ImageView image = row.findViewById(R.id.userPic);
             TextView name = row.findViewById(R.id.name);
             TextView about = row.findViewById(R.id.about);
-            Button btn = row.findViewById(R.id.button);
-            btn.setOnClickListener(new View.OnClickListener() {
+            row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(HomeActivity.this, UserActivity.class);

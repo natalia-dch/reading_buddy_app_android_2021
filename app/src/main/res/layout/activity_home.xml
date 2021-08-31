@@ -1,109 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".HomeActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
 
-<RelativeLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-    tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints">
 
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textSize="18sp"
-    android:id="@+id/header"
-    android:orientation="horizontal"
-    app:layout_constraintTop_toTopOf="parent"
-    android:weightSum="10.0"
-    android:layout_margin="10dp">
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:textSize="18sp"
+            android:weightSum="10.0"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5.0"
-        android:ems="10"
-        android:text="filter by book"
-        android:textAllCaps="false"
-        android:layout_margin="10dp"
-        android:onClick="filterByBook"/>
+            <Button
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="5.0"
+                android:onClick="filterByBook"
+                android:stateListAnimator="@null"
+                android:text="filter by book"
+                android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5.0"
-        android:text="filter by genre"
-        android:textAllCaps="false"
-        android:layout_margin="10dp"
-        android:onClick="filterByGenre"/>
-</LinearLayout>
+            <Button
+                android:id="@+id/filterReset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="5.0"
+                android:backgroundTint="@color/grey"
+                android:onClick="filterReset"
+                android:stateListAnimator="@null"
+                android:text="filtration"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
-<ListView
-    android:layout_weight="1"
-    android:id="@+id/list"
-    android:divider="@android:color/transparent"
-    android:dividerHeight="10.0sp"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_below="@id/header"
-    android:layout_above="@id/footer">
+            <Button
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="5.0"
+                android:onClick="filterByGenre"
+                android:stateListAnimator="@null"
+                android:text="filter by genre"
+                android:textAllCaps="false" />
+        </LinearLayout>
 
-</ListView>
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/footer"
+            android:layout_below="@id/header"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="10.0sp">
+           </ListView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="18sp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/footer">
 
-        <ImageButton
-            android:id="@+id/navb1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="72dp"
-            android:layout_weight="1.0"
-            android:background="@drawable/ic_person"
-            android:backgroundTint="@color/black"
-            android:onClick="toProfile"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteY="0dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/footer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"
+            android:textSize="18sp">
 
-        <ImageButton
-            android:id="@+id/navb2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_weight="1.0"
-            android:background="@drawable/ic_home"
-            android:backgroundTint="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/navb3"
-            app:layout_constraintStart_toEndOf="@+id/navb1"
-            tools:layout_editor_absoluteY="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageButton
+                android:id="@+id/navb1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="72dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/ic_person"
+                android:backgroundTint="@color/black"
+                android:onClick="toProfile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="0dp" />
 
-        <ImageButton
-            android:id="@+id/navb3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="72dp"
-            android:layout_weight="1.0"
-            android:background="@drawable/ic_message"
-            android:backgroundTint="@color/black"
-            android:onClick="toChats"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            <ImageButton
+                android:id="@+id/navb2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/ic_home"
+                android:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/navb3"
+                app:layout_constraintStart_toEndOf="@+id/navb1"
+                tools:layout_editor_absoluteY="0dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/navb3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="72dp"
+                android:layout_weight="1.0"
+                android:background="@drawable/ic_message"
+                android:backgroundTint="@color/black"
+                android:onClick="toChats"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/yellow"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

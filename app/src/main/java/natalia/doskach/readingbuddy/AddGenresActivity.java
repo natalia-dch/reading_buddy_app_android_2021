@@ -29,6 +29,8 @@ public class AddGenresActivity extends AppCompatActivity {
         LinearLayout layout = findViewById(R.id.list1);
         int count = layout.getChildCount();
         Button b = null;
+        if(getIntent().hasExtra("isOne"))
+            isOne = true;
         if(getIntent().hasExtra("genres"))
             genresList.putAll((HashMap<String,Boolean>) getIntent().getSerializableExtra("genres"));
         else{

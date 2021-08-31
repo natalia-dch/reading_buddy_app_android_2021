@@ -2,6 +2,7 @@ package natalia.doskach.readingbuddy;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MotionEventCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,14 +47,14 @@ public class ProfileActivity extends AppCompatActivity {
         profile = findViewById(R.id.profile_pic);
         longread = findViewById(R.id.long_read);
         ref = FirebaseDatabase.getInstance().getReference("Users").child(id);
-        profile.setImageResource(R.drawable.ic_person);
+        profile.setImageResource(R.drawable.ic_group_5);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 u = snapshot.getValue(User.class);
                 if(u.picURL!=null && !u.picURL.isEmpty()){
-                        Glide.with(ProfileActivity.this).load(u.picURL).placeholder(getDrawable(R.drawable.ic_def_profile)).into(profile);} //TODO
+                        Glide.with(ProfileActivity.this).load(u.picURL).placeholder(getDrawable(R.drawable.ic_group_5)).into(profile);}
                longread.setText(Data.createText(u));
             }
 
@@ -61,18 +63,21 @@ public class ProfileActivity extends AppCompatActivity {
             }
        });
     }
+
     public void toHome(View view) {
         startActivity(new Intent(this,HomeActivity.class));
+        finish();
     }
 
     public void toChats(View view) {
         startActivity(new Intent(this,ChatsActivity.class));
+        finish();
     }
 
 
     public void Logout(View view) {
          Data.mAuth.signOut();
-        startActivity(new Intent(this,MainActivity.class));
+        startActivity(new Intent(this,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     public void changeData(View view) {

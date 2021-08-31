@@ -27,8 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
         android:id="@+id/bigContainer"
-        android:backgroundTint="@color/grey"
+        android:background="@color/grey"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/header"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -39,23 +40,20 @@
             android:layout_width="106dp"
             android:layout_height="102dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            tools:srcCompat="@drawable/ic_def_profile" />
-
+            tools:srcCompat="@drawable/ic_group_5" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="10dp">
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -67,9 +65,8 @@
                 android:textAllCaps="false" />
 
             <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -77,13 +74,9 @@
                 android:layout_weight="1"
                 android:stateListAnimator="@null"
                 android:onClick="Logout"
-                android:text="  log out  "
+                android:text="   log out    "
                 android:textAllCaps="false" />
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -92,11 +85,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
+android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text="@string/lorem"
-            android:textColor="@color/black"
-            tools:layout_editor_absoluteX="152dp"
-            tools:layout_editor_absoluteY="302dp" />
+            android:textColor="@color/black" />
 
 
     </LinearLayout>

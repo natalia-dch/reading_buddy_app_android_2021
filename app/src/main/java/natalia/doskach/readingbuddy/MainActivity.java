@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,7 +16,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,22 +23,26 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity {
    EditText emailET,passwordET;
    String email,password;
+   FirebaseUser currentUser;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FirebaseApp.initializeApp(this);
-        Data.mAuth =  FirebaseAuth.getInstance();
-        Data.mAuth.signOut(); //TODO
-        FirebaseUser currentUser = Data.mAuth.getCurrentUser();
-        if(currentUser!=null)
-            startActivity(new Intent(this,HomeActivity.class));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        FirebaseApp.initializeApp(this);
+        Data.mAuth =  FirebaseAuth.getInstance();
+        currentUser = Data.mAuth.getCurrentUser();
+        if(currentUser!=null)
+            startActivity(new Intent(this,HomeActivity.class));
+        else{
         emailET = findViewById(R.id.email);
-        passwordET = findViewById(R.id.password);
+        passwordET = findViewById(R.id.password);}
 
     }
+
+
 
     public void forgotPassword(View view) {
         startActivity(new Intent(this,ForgotPasswordActivity.class));

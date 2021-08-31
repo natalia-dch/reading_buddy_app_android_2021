@@ -68,12 +68,19 @@ public class Data {
     private static String strFromArrayBooks(HashMap<String, Book> books) {
         String s = "";
         Iterator it = books.entrySet().iterator();
+        int counter = 0;
         while (it.hasNext()) {
+            counter++;
             Map.Entry pair = (Map.Entry)it.next();
-            s +="\""+((Book)pair.getValue()).title+"\" by "+((Book)pair.getValue()).author+", ";
+            if(counter < 4)
+            s +="\n\""+((Book)pair.getValue()).title+"\" by "+((Book)pair.getValue()).author+", ";
 //            it.remove(); // avoids a ConcurrentModificationException
         }
-        return s.substring(0,s.length()-2);
+        String res = s.substring(0,s.length()-2);
+        if(counter > 4)
+            return res + "\nand "+(counter-4) + " more books";
+        else
+            return res;
     }
 }
 

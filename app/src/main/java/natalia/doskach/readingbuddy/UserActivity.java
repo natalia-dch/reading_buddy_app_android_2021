@@ -26,19 +26,18 @@ public class UserActivity extends AppCompatActivity {
     TextView name;
     DatabaseReference ref;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        u = (User)getIntent().getSerializableExtra("user");
+        u = (User) getIntent().getSerializableExtra("user");
         id = getIntent().getStringExtra("id");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         profile = findViewById(R.id.profile_pic);
         longread = findViewById(R.id.long_read);
         name = findViewById(R.id.name);
-              Glide.with(UserActivity.this).load(u.picURL).into(profile); //TODO
-                  longread.setText(Data.createText(u));
-                  name.setText(u.name);
+        Glide.with(UserActivity.this).load(u.picURL).into(profile); //TODO
+        longread.setText(Data.createText(u));
+        name.setText(u.name);
     }
 
 
@@ -46,10 +45,7 @@ public class UserActivity extends AppCompatActivity {
         finish();
     }
 
-    public void add_to_friends(View view) {
-    }
-
-    public void send_a_message(View view) {
+    public void sendMessage(View view) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("user", u);

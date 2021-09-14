@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 u = snapshot.getValue(User.class);
                 if(u.picURL!=null && !u.picURL.isEmpty()){
-                        Glide.with(ProfileActivity.this).load(u.picURL).placeholder(getDrawable(R.drawable.ic_group_5)).into(profile);}
+                        Glide.with(getApplicationContext()).load(u.picURL).placeholder(getDrawable(R.drawable.ic_group_5)).into(profile);}
                longread.setText(Data.createText(u));
             }
 

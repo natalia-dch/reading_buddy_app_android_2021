@@ -21,10 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
-   EditText emailET,passwordET;
-   String email,password;
-   FirebaseUser currentUser;
-
+    EditText emailET, passwordET;
+    String email, password;
+    FirebaseUser currentUser;
 
 
     @Override
@@ -32,43 +31,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FirebaseApp.initializeApp(this);
-        Data.mAuth =  FirebaseAuth.getInstance();
+        Data.mAuth = FirebaseAuth.getInstance();
         currentUser = Data.mAuth.getCurrentUser();
-        if(currentUser!=null)
-            startActivity(new Intent(this,HomeActivity.class));
-        else{
-        emailET = findViewById(R.id.email);
-        passwordET = findViewById(R.id.password);}
+        if (currentUser != null)
+            startActivity(new Intent(this, HomeActivity.class));
+        else {
+            emailET = findViewById(R.id.email);
+            passwordET = findViewById(R.id.password);
+        }
 
     }
 
 
-
     public void forgotPassword(View view) {
-        startActivity(new Intent(this,ForgotPasswordActivity.class));
+        startActivity(new Intent(this, ForgotPasswordActivity.class));
     }
 
     public void signInOrRegister(View view) {
         email = emailET.getText().toString();
         password = passwordET.getText().toString();
-        if(email.isEmpty() || password.isEmpty())
-        {Toast.makeText(MainActivity.this, "wrong value!", Toast.LENGTH_LONG).show();
-        return;}
-        Data.mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(MainActivity.this, "wrong value!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Data.mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                startHome();
-                }
-                else{
-                    String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
-                    switch(errorCode){
-                        case "ERROR_WRONG_PASSWORD": Toast.makeText(MainActivity.this, "wrong password!", Toast.LENGTH_LONG).show(); passwordET.setText(""); break;
-                        case "ERROR_INVALID_EMAIL": Toast.makeText(MainActivity.this, "wrong email!", Toast.LENGTH_LONG).show(); emailET.setText("");break;
-                        case "ERROR_USER_NOT_FOUND": startRegistration();
+                if (task.isSuccessful()) {
+                    startHome();
+                } else {
+                    try {
+                        String errorCode = ((FirebaseAuthException) task.getException()).getErrorCode();
+                        switch (errorCode) {
+                            case "ERROR_WRONG_PASSWORD":
+                                Toast.makeText(MainActivity.this, "wrong password!", Toast.LENGTH_LONG).show();
+                                passwordET.setText("");
+                                break;
+                            case "ERROR_INVALID_EMAIL":
+                                Toast.makeText(MainActivity.this, "wrong email!", Toast.LENGTH_LONG).show();
+                                emailET.setText("");
+                                break;
+                            case "ERROR_USER_NOT_FOUND":
+                                startRegistration();
+                        }
+                    } catch (Exception e){
+                        Toast.makeText(MainActivity.this, "no connection!", Toast.LENGTH_LONG).show();
                     }
+
                 }
-        }});
+            }
+        });
 
     }
 
@@ -77,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startRegistration(){
+    public void startRegistration() {
         Intent intent = new Intent(this, RegistrationActivity.class);
         intent.putExtra("password", password);
         intent.putExtra("email", email);

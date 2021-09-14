@@ -49,6 +49,7 @@ public class UserActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("user", u);
+
         startActivity(intent);
     }
 }

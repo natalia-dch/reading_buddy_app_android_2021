@@ -1,13 +1,15 @@
 package natalia.doskach.readingbuddy;
 
+import java.util.Date;
+
 public class Message {
-    public String sender;
-    public String receiver;
+    public int sender;
     public String message;
-    public Message(String s, String r, String m){
+    public long date;
+    public Message(int s,  String m, long d){
         this.sender = s;
-        this.receiver = r;
         this.message = m;
+        this.date = d;
     }
     public Message(){};
 

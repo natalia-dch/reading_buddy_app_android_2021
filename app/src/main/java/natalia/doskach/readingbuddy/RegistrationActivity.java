@@ -86,6 +86,8 @@ public class RegistrationActivity<Firebase> extends AppCompatActivity {
                     Toast.makeText(RegistrationActivity.this, ((FirebaseAuthException) task.getException()).getErrorCode(), Toast.LENGTH_LONG).show();
 
                 if (task.isSuccessful()) {
+                    FirebaseDatabase.getInstance().getReference("UserChats").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .setValue("");
 
                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {

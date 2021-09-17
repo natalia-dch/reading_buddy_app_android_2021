@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -43,12 +44,17 @@ public class HomeActivity extends AppCompatActivity {
     Button aBtn;
     Button bBtn;
     Button resetBtn;
-    ArrayList<User> filteredUsers = new ArrayList<User>();
-    ArrayList<User> users = new ArrayList<User>();
-    ArrayList<String> comments = new ArrayList<String>();
-    ArrayList<String> IDs = new ArrayList<String>();
-    ArrayList<Integer> ranks = new ArrayList<Integer>();
-    ArrayList<String> filteredComments = new ArrayList<String>();
+    ArrayList<UserInList> usersInList = new ArrayList<>();
+    ArrayList<UserInList> filteredUsersInList = new ArrayList<>();
+    //    ArrayList<User> filteredUsers = new ArrayList<User>();
+//    ArrayList<User> users = new ArrayList<User>();
+//    ArrayList<String> comments = new ArrayList<String>();
+//    ArrayList<String> IDs = new ArrayList<String>();
+//    ArrayList<Integer> ranks = new ArrayList<Integer>();
+//    ArrayList<String> filteredComments = new ArrayList<String>();
+    ArrayList<String> TBRCodes = new ArrayList<>();
+    ArrayList<String> favCodes = new ArrayList<>();
+    ArrayList<String> favGenres = new ArrayList<>();
     DatabaseReference ref;
     DatabaseReference ref2;
     User u;
@@ -71,61 +77,72 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                users.clear();
-                IDs.clear();
-                comments.clear();
+//                users.clear();
+//                IDs.clear();
+//                comments.clear();
+                usersInList.clear();
+                TBRCodes.clear();
+                favCodes.clear();
                 String id = Data.mAuth.getCurrentUser().getUid();
                 User user = snapshot.child(id).getValue(User.class);
-                Iterator<String> TBRCodes = user.TBR.keySet().iterator();
-                Iterator<String> favoriteCodes = user.favBooks.keySet().iterator();
+                Iterator<String> iter1 = user.TBR.keySet().iterator();
+                while (iter1.hasNext())
+                    TBRCodes.add(iter1.next());
+                Iterator<String> iter2 = user.favBooks.keySet().iterator();
+                while (iter2.hasNext())
+                    favCodes.add(iter2.next());
+                for (String genre : Data.genresArray) {
+                    if (user.genres.get(genre))
+                        favGenres.add(genre);
+                }
                 Boolean[] genres = new Boolean[10];
                 user.genres.values().toArray(genres);
                 for (DataSnapshot d : snapshot.getChildren()) {
                     User u = (User) d.getValue(User.class);
-                    if(u.email == user.email)
+                    if (u.email == user.email)
                         continue;
-                    IDs.add(d.getKey());
+                    UserInList uInL = new UserInList(d.getKey());
+//                    IDs.add(d.getKey());
                     int rank = 0;
                     String comment = "also wants to read ";
-                    while(TBRCodes.hasNext()){
-                        String book = TBRCodes.next();
+                    for (String book : TBRCodes) {
                         if (u.TBR.containsKey(book)) {
                             rank = rank | 4;
-                            comment += "\"" + u.TBR.get(book).title + "\" by " + u.TBR.get(book).author+", ";
+                            comment += "\"" + u.TBR.get(book).title + "\" by " + u.TBR.get(book).author + ", ";
                         }
                     }
                     if (rank == 0) {
                         comment = "also likes ";
-                        while(favoriteCodes.hasNext()) {
-                            String book = favoriteCodes.next();
+                        for (String book : favCodes) {
                             if (u.favBooks.containsKey(book)) {
                                 rank = rank | 2;
-                                comment += "\"" + u.favBooks.get(book).title + "\" by " + u.favBooks.get(book).author+", ";
+                                comment += "\"" + u.favBooks.get(book).title + "\" by " + u.favBooks.get(book).author + ", ";
                             }
                         }
                     }
                     if (rank == 0) {
-                        Boolean[] userGenres = new Boolean[10];
-                        u.genres.values().toArray(userGenres);
-                        for (int i=0;i<10;i++){
-                            if(userGenres[i] & genres[i]){
+                        for (String genre : favGenres) {
+                            if (u.genres.get(genre)) {
                                 rank = rank | 1;
-                                comment += Data.genresArray[i]+", ";
-
+                                comment += genre + ", ";
                             }
+
                         }
                     }
-                    users.add(u);
-                    ranks.add(rank);
-                    if(rank != 0)
-                        comments.add(comment.substring(0, comment.length()-2));
+                    uInL.user = u;
+                    uInL.rank = rank;
+//                    users.add(u);
+//                    ranks.add(rank);
+                    if (rank != 0)
+                        uInL.comment = comment.substring(0, comment.length() - 2);
+//                        comments.add(comment.substring(0, comment.length()-2));
                     else
-                        comments.add(Data.createSmallText(u));
-
+                        uInL.comment = Data.createSmallText(u);
+//                        comments.add(Data.createSmallText(u));
+                    usersInList.add(uInL);
                 }
-
-
-                a = new UserAdapter(getApplicationContext(), users, comments);
+                Collections.sort(usersInList);
+                a = new UserAdapter(getApplicationContext(), usersInList);
                 pb.setVisibility(View.INVISIBLE);
                 list.setAdapter(a);
                 a.notifyDataSetChanged();
@@ -151,37 +168,37 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(new Intent(this, ChatsActivity.class));
     }
 
-    public void search(View view) {
-        String str = input.getText().toString();
-        if (Arrays.asList(Data.genresArray).contains(str))
-            searchByGenre(str);
-        else
-            searchByBook(str);
-    }
-
-    private void searchByBook(String str) {
-        ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                users.clear();
-                for (DataSnapshot d : snapshot.getChildren()) {
-                    User u = d.getValue(User.class);
-                    System.out.print("added values");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-
-    private void searchByGenre(String str) {
-    }
+//    public void search(View view) {
+//        String str = input.getText().toString();
+//        if (Arrays.asList(Data.genresArray).contains(str))
+//            searchByGenre(str);
+//        else
+//            searchByBook(str);
+//    }
+//
+//    private void searchByBook(String str) {
+//        ref = FirebaseDatabase.getInstance().getReference("Users");
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//                users.clear();
+//                for (DataSnapshot d : snapshot.getChildren()) {
+//                    User u = d.getValue(User.class);
+//                    System.out.print("added values");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//    }
+//
+//
+//    private void searchByGenre(String str) {
+//    }
 
     public void filterByBook(View view) {
         Intent i = new Intent(this, AddABookActivity.class);
@@ -221,20 +238,18 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void filterByThisGenre(String value) {
-        filteredUsers.clear();
-        filteredComments.clear();
-        for (User user : users
+        filteredUsersInList.clear();
+        for (UserInList user : usersInList
         ) {
-            if (user.genres.get(value)) {
-                filteredUsers.add(user);
-                filteredComments.add("likes " + value);
+            if (user.user.genres.get(value)) {
+                filteredUsersInList.add(new UserInList(user.user, "likes " + value, 0, user.id));
             }
         }
-        if (filteredUsers.isEmpty())
+        if (filteredUsersInList.isEmpty())
             Toast.makeText(this, "Nothing was found! Try another search", Toast.LENGTH_LONG).show();
         else {
             changeBtns(value);
-            a = new UserAdapter(getApplicationContext(), filteredUsers, filteredComments);
+            a = new UserAdapter(getApplicationContext(), filteredUsersInList);
             list.setAdapter(a);
         }
     }
@@ -242,23 +257,20 @@ public class HomeActivity extends AppCompatActivity {
     private void filterByThisBook(Book book) {
         String value = book.ISBN;
         String title = "\"" + book.title + "\" by " + book.author;
-        filteredUsers.clear();
-        filteredComments.clear();
-        for (User user : users
+        filteredUsersInList.clear();
+        for (UserInList user : usersInList
         ) {
-            if (user.TBR.containsKey(value)) {
-                filteredUsers.add(user);
-                filteredComments.add("wants to read " + title);
-            } else if (user.favBooks.containsKey(value)) {
-                filteredUsers.add(user);
-                filteredComments.add("likes " + title);
+            if (user.user.TBR.containsKey(value)) {
+                filteredUsersInList.add(new UserInList(user.user, "wants to read " + title, 0, user.id));
+            } else if (user.user.favBooks.containsKey(value)) {
+                filteredUsersInList.add(new UserInList(user.user, "likes " + title, 0, user.id));
             }
         }
-        if (filteredUsers.isEmpty())
+        if (filteredUsersInList.isEmpty())
             Toast.makeText(this, "Nothing was found! Try another search", Toast.LENGTH_LONG).show();
         else {
             changeBtns(title);
-            a = new UserAdapter(getApplicationContext(), filteredUsers, filteredComments);
+            a = new UserAdapter(getApplicationContext(), filteredUsersInList);
             list.setAdapter(a);
         }
     }
@@ -267,7 +279,7 @@ public class HomeActivity extends AppCompatActivity {
         resetBtn.setVisibility(View.GONE);
         aBtn.setVisibility(View.VISIBLE);
         bBtn.setVisibility(View.VISIBLE);
-        a = new UserAdapter(getApplicationContext(), users, comments);
+        a = new UserAdapter(getApplicationContext(), usersInList);
         list.setAdapter(a);
     }
 
@@ -280,14 +292,12 @@ public class HomeActivity extends AppCompatActivity {
 
     class UserAdapter extends ArrayAdapter {
         Context context;
-        ArrayList<User> users;
-        ArrayList<String> comments;
+        ArrayList<UserInList> users;
 
-        public UserAdapter(Context c, ArrayList<User> users, ArrayList<String> comments) {
+        public UserAdapter(Context c, ArrayList<UserInList> users) {
             super(c, R.layout.book_row);
             this.context = c;
             this.users = users;
-            this.comments = comments;
 
         }
 
@@ -308,15 +318,15 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(HomeActivity.this, UserActivity.class);
-                    i.putExtra("user", users.get(position));
-                    i.putExtra("id",IDs.get(position));
+                    i.putExtra("user", users.get(position).user);
+                    i.putExtra("id", users.get(position).id);
                     startActivity(i);
                 }
             });
-            name.setText(users.get(position).name);
-            about.setText(comments.get(position));
+            name.setText(users.get(position).user.name);
+            about.setText(users.get(position).comment);
             try {
-                Glide.with(context).load(users.get(position).picURL).into(image);
+                Glide.with(context).load(users.get(position).user.picURL).into(image);
             } catch (Exception e) {
             }
 

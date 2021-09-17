@@ -40,6 +40,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
     EditText about;
     ImageButton back;
     ProgressBar pb;
+    boolean isPhotoDownloading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        isPhotoDownloading = true;
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), 0);
 
     }
@@ -118,7 +120,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         StorageReference storageRef = storage.getReference();
                         Uri filePath = data.getData();
-                        String name = "images/"+u.email;
+                        String name = "images/" + u.email;
                         StorageTask<UploadTask.TaskSnapshot> profileRef = storageRef.child(name).putFile(filePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) {
@@ -127,6 +129,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         u.picURL = uri.toString();
                                         pb.setVisibility(View.INVISIBLE);
+                                        isPhotoDownloading = false;
                                         Toast.makeText(getApplicationContext(), "profile picture changed", Toast.LENGTH_LONG).show();
                                     }
                                 });
@@ -147,6 +150,11 @@ public class ChangeProfileActivity extends AppCompatActivity {
     }
 
     public void saveData(View view) {
+
+        if (isPhotoDownloading) {
+            Toast.makeText(getApplicationContext(), "Wait! Profile picture is uploading", Toast.LENGTH_LONG).show();
+            return;
+        }
         String nameStr = name.getText().toString();
         String addressStr = location.getText().toString();
         String aboutStr = about.getText().toString();

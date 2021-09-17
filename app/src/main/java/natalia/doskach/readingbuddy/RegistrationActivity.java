@@ -64,6 +64,7 @@ public class RegistrationActivity<Firebase> extends AppCompatActivity {
             return;
         }
         if (!addedBooks) {
+            Toast.makeText(RegistrationActivity.this, "Add favorite books!", Toast.LENGTH_LONG).show();
             return;
         }
         if (!addedGenres) {

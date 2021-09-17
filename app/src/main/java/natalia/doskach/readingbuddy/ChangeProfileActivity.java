@@ -145,6 +145,7 @@ public class ChangeProfileActivity extends AppCompatActivity {
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Toast.makeText(ChangeProfileActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
+                isPhotoDownloading = false;
             }
         }
     }

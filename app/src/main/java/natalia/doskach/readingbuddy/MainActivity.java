@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                                 emailET.setText("");
                                 break;
                             case "ERROR_USER_NOT_FOUND":
+                                Toast.makeText(MainActivity.this, "email not found! register instead", Toast.LENGTH_LONG).show();
                                 startRegistration();
                         }
                     } catch (Exception e){
@@ -94,5 +95,9 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("password", password);
         intent.putExtra("email", email);
         startActivity(intent);
+    }
+
+    public void register(View view) {
+        startRegistration();
     }
 }
